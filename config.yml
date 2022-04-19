@@ -1,0 +1,4 @@
+db_location: ./__database.db
+box_location: ./__box
+page_name: Streichelbox
+port: 8080
