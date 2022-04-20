@@ -1,4 +1,5 @@
 db_location: ./__database.db
 box_location: ./__box
-page_name: Streichelbox
+page_name: 文書箱
+domain_name: localhost:8080
 port: 8080

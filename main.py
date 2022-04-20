@@ -10,15 +10,14 @@ config = yaml.safe_load(open('config.yml'))
 app = web.Application()
 aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('./templates'))
 
-if not os.path.isfile(config['db_location']):
-    f = open(config['db_location'], 'x')
-    f.close()
+# if not os.path.isfile(config['db_location']):
+#    f = open(config['db_location'], 'x')
+#    f.close()
 
 if not os.path.isdir(config['box_location']):
     os.mkdir(config['box_location'])
 
 routes = web.RouteTableDef()
-
 
 @routes.get('/')
 @aiohttp_jinja2.template('index.html')
@@ -26,7 +25,7 @@ async def index(request):
     return {'title': config['page_name']}
 
 @routes.post('/')
-@aiohttp_jinja2.template('upload.html')
+@aiohttp_jinja2.template('index.html')
 async def upload(request):
     reader = await request.multipart()
 
@@ -39,7 +38,11 @@ async def upload(request):
         if field.name == "upload":
             filename = field.filename
             if not filename:
-                return {'report': "Select a file to upload", 'title': config['page_name']}
+                return {
+                    'error': True, 
+                    'report': "Please select a file to upload.",
+                    'title': config['page_name']
+                }
             size = 0
             with open(os.path.join(path, filename), 'wb') as f:
                 while True:
@@ -52,11 +55,17 @@ async def upload(request):
                     f.write(chunk)
             break
     
-    report = "{} with a size of {} bytes has been successfully uploaded to {}".format(filename, size, id_code)
-    return {'report': report, 'title': config['page_name']}
+    return {
+        'success': True, 
+        'filename': filename, 
+        'size': size,
+        'domain_name': config['domain_name'], 
+        'id_code': id_code ,
+        'title': config['page_name']
+    }
 
-@routes.get('/{id}')
-@routes.get('/{id}/')
+@routes.get('/d/{id}')
+@routes.get('/d/{id}/')
 async def download(request):
     path = os.path.join(config['box_location'], request.match_info['id'])
     filename = os.listdir(path)[0]

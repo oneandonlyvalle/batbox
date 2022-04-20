@@ -19,6 +19,12 @@
                     <br/>
                     <input type="submit" value="submit"/>
                 </form>
+                {% if error %}
+                <p>{{ report }}</p>
+                {% endif %}{% if success %}
+                <p>The file {{ filename }} with a size of {{ size }} bytes has been successfully uploaded.</p>
+                <p>You can retrieve it under <a href="{{ domain_name }}/d/{{ id_code }}">{{ domain_name }}/d/{{ id_code }}</a>.</p>
+                {% endif %}
             </div>
         </div>
     </body>
