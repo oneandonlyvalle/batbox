@@ -1,5 +1,5 @@
-db_location: ./__database.db
-box_location: ./__box
-page_name: 文書箱
-domain_name: localhost:8080
-port: 8080
+box_location: ./__box         # path to directory where files are saved
+db_location: ./__database.db  # path to database file
+page_name: Batbox             # title displayed on the website
+host_name: localhost:8080     # url or ip address where the application can be reached
+port: 8080                    # port where the application should be run
